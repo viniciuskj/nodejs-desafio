@@ -13,4 +13,12 @@ export async function listRoutes(app: FastifyInstance, listController: ListContr
     app.patch("/lists/:id", (req, reply) => {
         listController.update(req, reply);
     })
+
+    app.delete("/lists/:id", (req, reply) => {
+        listController.delete(req, reply);
+    })
+
+    app.get("/lists", (req, reply) => {
+        listController.fetchAll(req, reply);
+    })
 }

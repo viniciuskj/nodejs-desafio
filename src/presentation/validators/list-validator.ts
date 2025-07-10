@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ICreateListDto, IFindListByIdDto, IUpdateListRequestDto } from "../../application/dtos/listDto";
+import { ICreateListDto, IDeleteListRequestDto, IFindListByIdDto, IUpdateListRequestDto } from "../../application/dtos/listDto";
 
 export const listValidatorSchema: z.ZodType<ICreateListDto> = z.object({
     title: z.string().min(1),
@@ -20,3 +20,9 @@ export const listUpdateValidatorSchema: z.ZodType<Omit<IUpdateListRequestDto, "i
 })
 
 export type ListUpdateValidatorRequest = z.infer<typeof listUpdateValidatorSchema>
+
+export const listDeleteValidatorSchema: z.ZodType<IDeleteListRequestDto> = z.object({
+    id: z.string().min(1),
+})
+
+export type ListDeleteValidatorRequest = z.infer<typeof listDeleteValidatorSchema>

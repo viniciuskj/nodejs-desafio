@@ -25,3 +25,11 @@ export interface IUpdateListRequestDto {
 export interface IUpdateListResponseDto {
     list: List
 }
+
+export interface IDeleteListRequestDto {
+    id: string
+}
+
+export interface IFetchAllListsResponseDto {
+    lists: List[]
+}

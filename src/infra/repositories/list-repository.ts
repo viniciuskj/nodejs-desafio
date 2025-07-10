@@ -62,4 +62,44 @@ export class ListRepository implements IListRepository {
             }
         })
     }
+
+    async delete(id: string): Promise<void> {
+        await this.prisma.task.deleteMany({
+            where: {
+                listId: id,
+            }
+        })
+
+        await this.prisma.list.delete({
+            where: {
+                id,
+            }
+        })
+    }
+
+    async fetchAll(): Promise<List[]> {
+        const lists = await this.prisma.list.findMany({
+            take: 10,
+            include: {
+                tasks: true,
+            }
+        })
+
+        return lists.map(list => new List(
+            list.id,
+            list.title,
+            list.description,
+            list.tasks.map(task => new Task(
+                task.id,
+                list.id,
+                task.title,
+                task.description,
+                task.status as "pending" | "in_progress" | "completed",
+                task.createdAt,
+                task.updatedAt,
+            )),
+            list.createdAt,
+            list.updatedAt,
+        ))
+    }
 }

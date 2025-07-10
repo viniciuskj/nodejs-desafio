@@ -10,6 +10,8 @@ import { listRoutes } from "./presentation/routes/list-routes";
 import { taskRoutes } from "./presentation/routes/task-routes";
 import { FindListByIdUseCase } from "./application/use-cases/find-list-by-id-use-case";
 import { UpdateListUseCase } from "./application/use-cases/update-list-use-case";
+import { DeleteListUseCase } from "./application/use-cases/delete-list-use-case";
+import { FetchAllListsUseCase } from "./application/use-cases/fetch-all-lists-use-case";
 
 
 const app = fastify();
@@ -23,6 +25,8 @@ const listUseCases = {
     create: new CreateListUseCase(listRepository),
     findById: new FindListByIdUseCase(listRepository),
     update: new UpdateListUseCase(listRepository),
+    delete: new DeleteListUseCase(listRepository),
+    fetchAll: new FetchAllListsUseCase(listRepository),
 }
 const taskUseCases = {
     create: new CreateTaskUseCase(taskRepository),
@@ -31,7 +35,10 @@ const taskUseCases = {
 const listController = new ListController(
     listUseCases.create, 
     listUseCases.findById, 
-    listUseCases.update);
+    listUseCases.update,
+    listUseCases.delete,
+    listUseCases.fetchAll
+);
 
 const taskController = new TaskController(taskUseCases.create);
 
