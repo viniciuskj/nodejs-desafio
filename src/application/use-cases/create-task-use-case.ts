@@ -1,10 +1,10 @@
 import { Task } from "../../domain/entities/task";
-import { TaskRepository } from "../../domain/repositories/task-repository";
+import { ITaskRepository } from "../../domain/repositories/task-repository";
 import { ICreateTaskDto, ICreateTaskResponseDto } from "../dtos/taskDto";
 
 
 export class CreateTaskUseCase {
-    constructor(private taskRepository: TaskRepository) {}
+    constructor(private taskRepository: ITaskRepository) {}
 
     async execute({
         title,

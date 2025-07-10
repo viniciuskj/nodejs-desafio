@@ -1,5 +1,5 @@
 import { Task } from "../entities/task";
 
-export interface TaskRepository {
+export interface ITaskRepository {
     create(task: Task): Promise<void>
 }

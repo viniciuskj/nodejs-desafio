@@ -8,3 +8,20 @@ export interface ICreateListDto {
 export interface ICreateListResponseDto {
     list: List
 }
+export interface IFindListByIdDto {
+    id: string
+}
+
+export interface IFindListByIdResponseDto {
+    list: List
+}
+
+export interface IUpdateListRequestDto {
+    id: string
+    title: string
+    description: string
+}
+
+export interface IUpdateListResponseDto {
+    list: List
+}

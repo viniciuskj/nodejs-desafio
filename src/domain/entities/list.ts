@@ -11,12 +11,12 @@ export class List {
         public readonly updatedAt: Date,
     ) {}
 
-    static create(title: string, description: string) {
+    static create(title: string, description: string, tasks: Task[] = []) {
         return new List(
             randomUUID(),
             title,
             description,
-            [],
+            tasks,
             new Date(),
             new Date(),
         )
