@@ -1,18 +1,20 @@
 import fastify from "fastify";
-import { CreateListUseCase } from "./application/use-cases/create-list-use-case";
-import { CreateTaskUseCase } from "./application/use-cases/create-task-use-case";
-import { ListRepository } from "./infra/repositories/list-repository";
-import { TaskRepository } from "./infra/repositories/task-repository";
-import { ListController } from "./presentation/controllers/list-controller";
-import { TaskController } from "./presentation/controllers/task-controller";
-import { listRoutes } from "./presentation/routes/list-routes";
-import { taskRoutes } from "./presentation/routes/task-routes";
-import { FindListByIdUseCase } from "./application/use-cases/find-list-by-id-use-case";
-import { UpdateListUseCase } from "./application/use-cases/update-list-use-case";
-import { DeleteListUseCase } from "./application/use-cases/delete-list-use-case";
-import { FetchAllListsUseCase } from "./application/use-cases/fetch-all-lists-use-case";
 import { PrismaClient } from "../prisma/src/generated/prisma";
 import { env } from "../env";
+import {
+    CreateListUseCase,
+    FindListByIdUseCase,
+    UpdateListUseCase,
+    DeleteListUseCase,
+    FetchAllListsUseCase,
+    CreateTaskUseCase,
+    UpdateTaskUseCase,
+    FindTaskByIdUseCase,
+} from './application/use-cases';
+
+import { ListRepository, TaskRepository } from './infra/repositories';
+import { ListController, TaskController } from './presentation/controllers';
+import { listRoutes, taskRoutes } from './presentation/routes';
 
 
 const app = fastify();
@@ -29,9 +31,12 @@ const listUseCases = {
     delete: new DeleteListUseCase(listRepository),
     fetchAll: new FetchAllListsUseCase(listRepository),
 }
+
 const taskUseCases = {
     create: new CreateTaskUseCase(taskRepository),
-}
+    update: new UpdateTaskUseCase(taskRepository),
+    findById: new FindTaskByIdUseCase(taskRepository),
+}   
 
 const listController = new ListController(
     listUseCases.create, 
@@ -41,7 +46,7 @@ const listController = new ListController(
     listUseCases.fetchAll
 );
 
-const taskController = new TaskController(taskUseCases.create);
+const taskController = new TaskController(taskUseCases.create, taskUseCases.update, taskUseCases.findById);
 
 listRoutes(app, listController);
 taskRoutes(app, taskController);

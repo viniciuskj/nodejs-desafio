@@ -1,10 +1,16 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { CreateTaskUseCase } from "../../application/use-cases/create-task-use-case";
-import { taskValidatorSchema } from "../validators/task-validator";
+import { taskIdValidatorSchema, taskUpdateValidatorSchema, taskValidatorSchema } from "../validators/task-validator";
 import { ZodError } from "zod";
+import { UpdateTaskUseCase } from "../../application/use-cases/update-task-use-case";
+import { FindTaskByIdUseCase } from "../../application/use-cases/find-task-by-id-use-case";
 
 export class TaskController {
-    constructor(private createTaskUseCase: CreateTaskUseCase) {}
+    constructor(
+        private createTaskUseCase: CreateTaskUseCase,
+        private updateTaskUseCase: UpdateTaskUseCase,
+        private findTaskByIdUseCase: FindTaskByIdUseCase
+    ) {}
 
     async create(request: FastifyRequest, reply: FastifyReply) {
         try {
@@ -36,5 +42,54 @@ export class TaskController {
         return reply.status(500).send({
             message: "Internal server error"
         })
+    }
+
+    async update(request: FastifyRequest, reply: FastifyReply) {
+        try {
+            const { id } = taskIdValidatorSchema.parse(request.params);
+
+            const { title, description, status } = taskUpdateValidatorSchema.parse(request.body);
+
+            await this.updateTaskUseCase.execute({
+                id,
+                title,
+                description,
+                status,
+            })
+
+            return reply.status(200).send();
+        } catch (error) {
+            if (error instanceof ZodError) {
+                return reply.status(400).send({
+                    message: "Invalid request",
+                    errors: error.issues,
+                })
+            }
+        }
+
+        return reply.status(500).send({
+            message: "Internal server error"
+        })
+    }
+
+    async findById(request: FastifyRequest, reply: FastifyReply) {
+        try {
+            const { id } = taskIdValidatorSchema.parse(request.params);
+
+            const { task } = await this.findTaskByIdUseCase.execute({ id })
+
+            return reply.status(200).send(task);
+        } catch (error) {
+            if (error instanceof ZodError) {
+                return reply.status(400).send({
+                    message: "Invalid request",
+                    errors: error.issues,
+                })
+            }
+
+            return reply.status(500).send({
+                message: "Internal server error"
+            })
+        }
     }
 }
