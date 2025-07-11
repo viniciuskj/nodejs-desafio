@@ -1,4 +1,3 @@
-import { PrismaClient } from "./generated/prisma";
 import fastify from "fastify";
 import { CreateListUseCase } from "./application/use-cases/create-list-use-case";
 import { CreateTaskUseCase } from "./application/use-cases/create-task-use-case";
@@ -12,6 +11,8 @@ import { FindListByIdUseCase } from "./application/use-cases/find-list-by-id-use
 import { UpdateListUseCase } from "./application/use-cases/update-list-use-case";
 import { DeleteListUseCase } from "./application/use-cases/delete-list-use-case";
 import { FetchAllListsUseCase } from "./application/use-cases/fetch-all-lists-use-case";
+import { PrismaClient } from "../prisma/src/generated/prisma";
+import { env } from "../env";
 
 
 const app = fastify();
@@ -45,7 +46,7 @@ const taskController = new TaskController(taskUseCases.create);
 listRoutes(app, listController);
 taskRoutes(app, taskController);
 
-app.listen({ port: 3333}, (error, address) => {
+app.listen({ port: env.PORT}, (error, address) => {
     if (error) {
         console.error(error);
         process.exit(1);

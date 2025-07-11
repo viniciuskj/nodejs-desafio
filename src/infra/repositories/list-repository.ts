@@ -1,7 +1,7 @@
-import { PrismaClient } from "../../generated/prisma";
 import { IListRepository } from "../../domain/repositories/list-repository";
 import { List } from "../../domain/entities/list";
 import { Task } from "../../domain/entities/task";
+import { PrismaClient } from "../../../prisma/src/generated/prisma";
 
 export class ListRepository implements IListRepository {
     constructor(private prisma: PrismaClient) {}

@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../generated/prisma";
+import { PrismaClient } from "../../../prisma/src/generated/prisma";
 import { Task } from "../../domain/entities/task";
 import { ITaskRepository } from "../../domain/repositories/task-repository";
 
