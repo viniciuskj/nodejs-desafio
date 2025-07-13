@@ -9,4 +9,8 @@ export async function taskRoutes(app: FastifyInstance, taskController: TaskContr
     app.patch("/tasks/:id", (req, reply) => {
         taskController.update(req, reply);
     })
+
+    app.delete("/tasks/:id", (req, reply) => {
+        taskController.delete(req, reply);
+    })
 }

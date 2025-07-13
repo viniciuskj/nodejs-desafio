@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ICreateTaskDto, IFindTaskByIdRequestDto, IUpdateTaskRequestDto } from "../../application/dtos/taskDto";
+import { ICreateTaskDto, IDeleteTaskRequestDto, IFindTaskByIdRequestDto, IUpdateTaskRequestDto } from "../../application/dtos/taskDto";
 
 export const taskValidatorSchema: z.ZodType<ICreateTaskDto> = z.object({
     title: z.string().min(1),
@@ -24,3 +24,9 @@ export const taskUpdateValidatorSchema: z.ZodType<Omit<IUpdateTaskRequestDto, "i
 })
 
 export type TaskUpdateValidatorRequest = z.infer<typeof taskUpdateValidatorSchema>
+
+export const taskDeleteValidatorSchema: z.ZodType<IDeleteTaskRequestDto> = z.object({
+    id: z.string().min(1),
+})
+
+export type TaskDeleteValidatorRequest = z.infer<typeof taskDeleteValidatorSchema>

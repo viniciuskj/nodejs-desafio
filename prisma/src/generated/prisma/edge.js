@@ -136,7 +136,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\vinik\\nodejs-desafio\\prisma\\src\\generated\\prisma",
+      "value": "/Users/viniciuskenji/nodejs-desafio/prisma/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -145,16 +145,16 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\vinik\\nodejs-desafio\\prisma\\schema.prisma",
+    "sourceFilePath": "/Users/viniciuskenji/nodejs-desafio/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../../.env"
   },
   "relativePath": "../../..",
@@ -164,7 +164,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {

@@ -10,6 +10,7 @@ import {
     CreateTaskUseCase,
     UpdateTaskUseCase,
     FindTaskByIdUseCase,
+    DeleteTaskUseCase,
 } from './application/use-cases';
 
 import { ListRepository, TaskRepository } from './infra/repositories';
@@ -36,6 +37,7 @@ const taskUseCases = {
     create: new CreateTaskUseCase(taskRepository),
     update: new UpdateTaskUseCase(taskRepository),
     findById: new FindTaskByIdUseCase(taskRepository),
+    delete: new DeleteTaskUseCase(taskRepository),
 }   
 
 const listController = new ListController(
@@ -46,7 +48,7 @@ const listController = new ListController(
     listUseCases.fetchAll
 );
 
-const taskController = new TaskController(taskUseCases.create, taskUseCases.update, taskUseCases.findById);
+const taskController = new TaskController(taskUseCases.create, taskUseCases.update, taskUseCases.findById, taskUseCases.delete);
 
 listRoutes(app, listController);
 taskRoutes(app, taskController);

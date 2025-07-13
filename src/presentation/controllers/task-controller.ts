@@ -1,15 +1,17 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { CreateTaskUseCase } from "../../application/use-cases/create-task-use-case";
-import { taskIdValidatorSchema, taskUpdateValidatorSchema, taskValidatorSchema } from "../validators/task-validator";
+import { taskDeleteValidatorSchema, taskIdValidatorSchema, taskUpdateValidatorSchema, taskValidatorSchema } from "../validators/task-validator";
 import { ZodError } from "zod";
 import { UpdateTaskUseCase } from "../../application/use-cases/update-task-use-case";
 import { FindTaskByIdUseCase } from "../../application/use-cases/find-task-by-id-use-case";
+import { DeleteTaskUseCase } from "../../application/use-cases/delete-task-use-case";
 
 export class TaskController {
     constructor(
         private createTaskUseCase: CreateTaskUseCase,
         private updateTaskUseCase: UpdateTaskUseCase,
-        private findTaskByIdUseCase: FindTaskByIdUseCase
+        private findTaskByIdUseCase: FindTaskByIdUseCase,
+        private deleteTaskUseCase: DeleteTaskUseCase
     ) {}
 
     async create(request: FastifyRequest, reply: FastifyReply) {
@@ -91,5 +93,26 @@ export class TaskController {
                 message: "Internal server error"
             })
         }
+    }
+
+    async delete(request: FastifyRequest, reply: FastifyReply) {
+        try {
+            const { id } = taskDeleteValidatorSchema.parse(request.params);
+
+            await this.deleteTaskUseCase.execute({ id });
+
+            return reply.status(200).send();
+        } catch (error) {
+            if (error instanceof ZodError) {
+                return reply.status(400).send({
+                    message: "Invalid request",
+                    errors: error.issues,
+                })
+            }
+        }
+
+        return reply.status(500).send({
+            message: "Internal server error"
+        })
     }
 }
